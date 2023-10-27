@@ -20,8 +20,54 @@ public class LengthOfConsecutive1s_BySwapping {
      * 4. Add the counts and add 1 to the answer.
      * 5. Choose the max answer.
      * 6. If ans > total number of ones, then ans = ans - 1, else ans is the final ans.
+     *
+     * TC will be O(N) -> every 1 will be referred max 2 times
+     *      (one time when it is left to a 0 and next time if it is right to a 0)
      */
     public void execute(String A) {
+        // convert to array
+        char[] binaryArr = A.toCharArray();
+        int length = A.length();
+        int totalOnes = 0;
+        int ans = 0;
 
+        for (int i = 0; i < length; i++) {
+            if (binaryArr[i] == '1') {
+                totalOnes++;
+            }
+        }
+
+        if (totalOnes != length) {
+            // iterating over the array
+            for (int i = 0; i < length; i++) {
+                // encountered 0
+                if (binaryArr[i] == '0') {
+                    int count = 1;
+                    // counting 1s to the left
+                    for (int j = i - 1; j >= 0; j--) {
+                        if (binaryArr[j] == '1') {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    // counting 1s to the right
+                    for (int j = i + 1; j < length; j++) {
+                        if (binaryArr[j] == '1') {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    ans = Math.max(ans, count);
+                }
+            }
+
+            if (ans > totalOnes) {
+                ans--;
+            }
+        }
+
+        System.out.println("the total count of 1s will be : " + ans);
     }
 }
